@@ -1,0 +1,8 @@
+.db
+.redis
+.git
+coverage
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
