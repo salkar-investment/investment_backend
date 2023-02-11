@@ -19,7 +19,10 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= Rails.application.secrets.postgresql_pool %>
+  username: <%= Rails.application.secrets.postgresql_username %>
+  password: <%= Rails.application.secrets.postgresql_password %>
+  host: <%= Rails.application.secrets.postgresql_host %>
 
 development:
   <<: *default
@@ -82,5 +85,3 @@ test:
 production:
   <<: *default
   database: investment_backend_production
-  username: investment_backend
-  password: <%= ENV["INVESTMENT_BACKEND_DATABASE_PASSWORD"] %>
