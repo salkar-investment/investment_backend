@@ -16,7 +16,7 @@ gem "ransack"
 gem "sidekiq"
 
 group :development, :test do
-  gem "debug"
+  gem "debug", "1.7.0" # https://github.com/ruby/debug/issues/852
   gem "dotenv-rails"
   gem "factory_bot_rails"
   gem 'rspec-rails', '~> 6.0.0'
