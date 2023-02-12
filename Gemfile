@@ -3,35 +3,29 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 
+gem "blueprinter"
 gem "bootsnap", require: false
+gem "dry-validation", "~> 1.8"
+gem "interactor", "~> 3.0"
+gem "kaminari"
 gem "pg", "~> 1.1"
+gem "pg_search"
 gem "puma", "~> 5.0"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
+gem "ransack"
 gem "sidekiq"
-
-# Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
-
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
-
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem "rack-cors"
 
 group :development, :test do
   gem "debug"
   gem "dotenv-rails"
+  gem "factory_bot_rails"
+  gem 'rspec-rails', '~> 6.0.0'
 end
 
 group :development do
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
+  gem "annotate"
 end
 
 group :test do
   gem "bullet"
 end
-
