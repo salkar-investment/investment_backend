@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rake:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.2
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: [ "5432:5432" ]
+    env:
+      PG_HOST: localhost
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - run: |
+          bundle exec rake db:create
+          bundle exec rake db:schema:load
+      - run: bundle exec rake

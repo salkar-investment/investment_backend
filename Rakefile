@@ -4,3 +4,11 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
+
+if Rails.env.in?(%w[development test])
+  # require "rubocop/rake_task"
+  # RuboCop::RakeTask.new(:rubocop)
+
+  # task default: %i[rubocop factory_bot:lint spec]
+  task default: %i[factory_bot:lint spec]
+end
