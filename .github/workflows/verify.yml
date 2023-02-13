@@ -25,3 +25,4 @@ jobs:
           bundle exec rake db:schema:load
       - run: bundle exec rake
       - uses: codecov/codecov-action@v3
+      - run: bundle exec bundle-audit
