@@ -33,4 +33,6 @@ end
 
 group :test do
   gem "bullet"
+  gem "simplecov"
+  gem "simplecov-cobertura"
 end
