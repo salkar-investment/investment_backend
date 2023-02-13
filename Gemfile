@@ -29,6 +29,7 @@ end
 
 group :development do
   gem "annotate"
+  gem "bundler-audit"
 end
 
 group :test do
