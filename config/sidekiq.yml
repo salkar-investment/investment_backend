@@ -1,0 +1,14 @@
+---
+production:
+  concurrency: 10
+queues:
+  - critical
+  - high
+  - default
+  - low
+scheduler:
+  schedule:
+    delete_outdated_sessions:
+      every: "1h"
+      queue: low
+      class: "Auth::Sessions::DeleteOutdatedJob"
