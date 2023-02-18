@@ -1,0 +1,4 @@
+en:
+  auth:
+    authenticate:
+      session_not_found: "session is not found"

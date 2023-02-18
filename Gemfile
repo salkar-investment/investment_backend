@@ -5,6 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.1"
 
+gem "bcrypt", "~> 3.1.13"
 gem "blueprinter"
 gem "bootsnap", require: false
 gem "dry-validation", "~> 1.8"
@@ -16,6 +17,7 @@ gem "puma", "~> 5.0"
 gem "rails", "~> 7.0.4", ">= 7.0.4.2"
 gem "ransack"
 gem "sidekiq"
+gem "sidekiq-scheduler"
 
 group :development, :test do
   gem "debug", "1.7.0" # https://github.com/ruby/debug/issues/852
