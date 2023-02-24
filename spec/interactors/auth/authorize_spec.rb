@@ -17,8 +17,8 @@ RSpec.describe Auth::Authorize do
 
   it do
     is_expected.to be_success
-    expect(subject.resource)
-      .to eq(permissions: [permission], modifiers: ["email"])
+    expect(subject.resource.permissions).to contain_exactly(permission)
+    expect(subject.resource.modifiers).to contain_exactly("email")
   end
 
   context "when multiple permissions available" do
@@ -32,9 +32,9 @@ RSpec.describe Auth::Authorize do
 
     it do
       is_expected.to be_success
-      expect(subject.resource)
-        .to match(permissions: array_including(permission, permission_1),
-                  modifiers: array_including("email", "other"))
+      expect(subject.resource.permissions).to contain_exactly(permission,
+permission_1)
+      expect(subject.resource.modifiers).to contain_exactly("email", "other")
     end
   end
 
