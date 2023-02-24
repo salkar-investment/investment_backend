@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Auth::Authorize < ApplicationInteractor
+  Authorization = Struct.new(:permissions, :modifiers, keyword_init: true)
   class Contract < Dry::Validation::Contract
     params do
       required(:controller).filled(:string)
@@ -12,7 +13,7 @@ class Auth::Authorize < ApplicationInteractor
   def call
     fail!("base", t(".no_permissions")) if permissions.blank?
 
-    context.resource = { permissions:, modifiers: }
+    context.resource = Authorization.new(permissions:, modifiers:)
   end
 
   private
