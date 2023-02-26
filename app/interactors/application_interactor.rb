@@ -25,26 +25,10 @@ class ApplicationInteractor
       fail_with_errors!(errors)
     end
 
-    def fail_with_resource!(resource)
-      errors = resource.errors.messages.map do |key, values|
-        attrs = resource.attributes.keys
-        mutate_name = !key.to_s.in?(attrs) && "#{key}_id".in?(attrs)
-        values.map do |value|
-          { key: mutate_name ? "resource.#{key}_id" : "resource.#{key}",
-            value: }
-        end
-      end.flatten
-      fail_with_errors!(errors)
-    end
-
     def raw_params
       result = context.params
       result = result.permit!.to_h if result.is_a?(ActionController::Parameters)
       result
-    end
-
-    def resource_params
-      permitted_params[:resource]
     end
 
     def t(str)
@@ -57,11 +41,12 @@ class ApplicationInteractor
       "#{self.class.to_s.underscore.tr('/', '.')}#{name}"
     end
 
-    def fail!(key, value, meta = nil)
-      context.fail!(errors: [{ key:, value: }.merge({ meta: }.compact)])
+    def fail!(key, value, meta = nil, status: :unprocessable_entity)
+      context.fail!(errors: [{ key:, value: }.merge({ meta: }.compact)],
+status:)
     end
 
-    def fail_with_errors!(errors)
-      context.fail!(errors: Array.wrap(errors))
+    def fail_with_errors!(errors, status: :unprocessable_entity)
+      context.fail!(errors: Array.wrap(errors), status:)
     end
 end
