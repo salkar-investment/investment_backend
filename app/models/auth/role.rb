@@ -17,4 +17,5 @@ class Auth::Role < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   has_many :user_roles, dependent: :delete_all
+  has_many :permissions, dependent: :delete_all
 end
