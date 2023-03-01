@@ -4,7 +4,8 @@ RSpec.shared_examples_for(
   "create action"
 ) do |separate_schema_errors: [],
       optional_params: [],
-      additional_relation_keys: []|
+      additional_relation_keys: [],
+      uniq_scopes: []|
   include_context "common action context"
   subject { post :create, params: { resource: params } }
 
@@ -17,6 +18,7 @@ RSpec.shared_examples_for(
   let(:success_expected_attrs) { success_params }
   let(:failure_params) { success_params.transform_values { |_val| nil } }
   let(:permission_action) { "create" }
+  let(:initial_count) { 0 }
 
   include_examples "when not authenticated"
   include_examples "when not authorized"
@@ -25,7 +27,7 @@ RSpec.shared_examples_for(
   context "when authenticated and authorized", with_auth_stub: true do
     it do
       expect { subject }.to change { resource_class.count }
-                        .from(0).to(1)
+                        .from(initial_count).to(initial_count + 1)
       resource = resource_class.last
       success_expected_attrs.each do |k, v|
         expect(resource.public_send(k)).to eq(v)
@@ -79,6 +81,21 @@ RSpec.shared_examples_for(
       it_behaves_like("validation failed on create action",
                       skip_without_expected_errors: true)
     end
+
+    uniq_scopes.each do |uniq_scope|
+      context "if uniq validation failed" do
+        let!(:prev_resource) do
+          create(factory_name, success_expected_attrs.slice(*uniq_scope))
+        end
+        let(:expected_errors) do
+          [{ "key" => "resource.#{uniq_scope.first}",
+             "value" => "has already been taken" }]
+        end
+        let(:initial_count) { 1 }
+
+        it_behaves_like("validation failed on create action")
+      end
+    end
   end
 end
 
@@ -89,7 +106,7 @@ RSpec.shared_examples_for(
     next if skip_without_expected_errors && expected_errors.blank?
 
     expect { subject }
-      .not_to change { resource_class.count }.from(0)
+      .not_to change { resource_class.count }.from(initial_count)
     expect(response.status).to eq(422)
     expect(response.parsed_body["errors"]).to match_array(expected_errors)
   end
