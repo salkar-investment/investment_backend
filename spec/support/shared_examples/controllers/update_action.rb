@@ -3,7 +3,8 @@
 RSpec.shared_examples_for(
   "update action"
 ) do |optional_params: [],
-      separate_schema_errors: []|
+      separate_schema_errors: [],
+      uniq_scopes: []|
   include_context "common action context"
   subject { put :update, params: { id:, resource: params } }
 
@@ -76,6 +77,20 @@ RSpec.shared_examples_for(
 
       it_behaves_like("validation failed on update action",
                       skip_without_expected_errors: true)
+    end
+
+    uniq_scopes.each do |uniq_scope|
+      context "if uniq validation failed" do
+        let!(:prev_resource) do
+          create(factory_name, success_expected_attrs.slice(*uniq_scope))
+        end
+        let(:expected_errors) do
+          [{ "key" => "resource.#{uniq_scope.first}",
+             "value" => "has already been taken" }]
+        end
+
+        it_behaves_like("validation failed on update action")
+      end
     end
   end
 end
