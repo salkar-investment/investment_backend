@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :auth do
         resources :roles
+        resource :session, only: %i[create destroy]
       end
     end
   end
